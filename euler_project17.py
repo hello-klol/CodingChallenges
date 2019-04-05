@@ -74,3 +74,14 @@ number_chars = NumberGenerator(
 )
 solution = sum(number_chars.get_number(n) for n in range(1,1001))
 print(solution)
+
+
+# To use the class to generate strings for any int, initiate it with the arrays of strings. E.g.
+number_strings = NumberGenerator( 
+    under20, 
+    tenths, 
+    hundred, 
+    thousand, 
+    and_str
+)
+print(number_strings.get_number(21124))
