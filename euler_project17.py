@@ -18,7 +18,6 @@ contains 23 letters and 115 (one hundred and fifteen) contains 20 letters. The u
 "and" when writing out numbers is in compliance with British usage.
 """
 
-
 under20 = ['','one','two','three','four','five','six','seven','eight','nine',
    'ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen',
            'eighteen','nineteen']
@@ -40,13 +39,13 @@ class NumberGenerator:
     def get_number(self, i):
         
         if not isinstance(i, int):
-            raise Exception('Expected int. Value given was: {}'.format(i))
+            raise ValueError('Expected int. Value given was: {}'.format(i))
             
         if i<0:
-            raise Exception('Cannot be used with negative numbers. Value given was: {}'.format(i))
+            raise ValueError('Cannot be used with negative numbers. Value given was: {:,}'.format(i))
             
-        if i>=10000:
-            raise Exception('Cannot be used with numbers greater than 10,000. Value given was: {}'.format(i))
+        if i>=100000:
+            raise ValueError('Cannot be used with numbers greater than 10,000. Value given was: {:,}'.format(i))
         
         elif i<20:
             return self.under20[i]
@@ -65,7 +64,6 @@ class NumberGenerator:
             return self.get_number(math.floor(i/1000)) + self.thousand + self.get_number(i%1000)
 
 
-
 to_length = lambda x: len(x)
 number_chars = NumberGenerator( 
     list(map(to_length, under20)), 
@@ -74,8 +72,5 @@ number_chars = NumberGenerator(
     len(thousand), 
     len(and_str)
 )
-
-
 solution = sum(number_chars.get_number(n) for n in range(1,1001))
-
 print(solution)
