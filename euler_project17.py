@@ -64,10 +64,9 @@ class NumberGenerator:
             return self.get_number(math.floor(i/1000)) + self.thousand + self.get_number(i%1000)
 
 
-to_length = lambda x: len(x)
 number_chars = NumberGenerator( 
-    list(map(to_length, under20)), 
-    list(map(to_length, tenths)), 
+    list(map(len, under20)), 
+    list(map(len, tenths)), 
     len(hundred), 
     len(thousand), 
     len(and_str)
