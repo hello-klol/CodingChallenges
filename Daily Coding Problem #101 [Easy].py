@@ -18,7 +18,7 @@
 # If a < c OR a==c AND b < d.
 
 # To save generating some of the smaller ones repeatedly
-PRIMES = [1,2,3,5,7,11]
+PRIMES = [2,3,5,7,11]
 
 def is_prime(num):
     if num==1 or num==2:
@@ -35,27 +35,52 @@ def has_factors(num):
             return True
     return False
 
-
-
-even_digits = [4,6,8,10,12,14,16,18]
-
-for dig in even_digits:
-    found_pair = False
-    pair = [(dig//2) + 1]
-    if is_prime(pair[0]):
-        pair.append(dig - pair[0])
+def get_prime_pair(num):
+    # pair = [(num//2) + 1]
+    # if is_prime(pair[0]):
+    #     pair.append(num-pair[0])
+    #     if is_prime(pair[1]):
+    #         pair.sort()
+    #         return pair
+    # else:
+    for p in PRIMES:
+        pair = [p, num-p]
         if is_prime(pair[1]):
-            found_pair = True
-            pair.sort()
-            print('{},{}'.format(*pair))
+            return pair
+    ## TODO: add primes generator and extend list
+
+
+def prime_sum_string(num):
+    pair = get_prime_pair(num)
+    if pair:
+        return '{} + {} = {}'.format(*pair,num)       
     else:
-        for p in PRIMES:
-            guess = p
-            counterpart = dig - guess
-            if is_prime(counterpart):
-                found_pair = True
-                print('{},{}'.format(guess, counterpart))
-                break
-        ## add primes generator and extend list
-    if found_pair == False:
-        print('Failed to find match for {}'.format(dig))
+        raise Exception('No match')
+
+
+even_digits = [4,6,8,10,12,14,16,18,20]
+for num in even_digits:
+    try:
+        print(prime_sum_string(num))
+    except Exception as e:
+        print('Failed to find match for {}'.format(num))
+        print(e)
+
+
+
+# import unittest
+
+# class TestSum(unittest.TestCase):
+#     def test_list_int(self):
+#         """
+#         Test that fn returns expected output
+#         """
+#         # Input: 4
+#         # Output: 2 + 2 = 4
+#         num = 4
+#         expected = '2 + 2 = 4'
+#         actual = get_prime_sum(num)
+#         self.assertEqual(expected, actual)
+
+# if __name__ == '__main__':
+#     unittest.main()
