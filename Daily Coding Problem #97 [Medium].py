@@ -38,16 +38,21 @@ class TimeDict:
         self.multi_idx_df.loc[(key, time), :] = value
         pass
 
-    def get(self, key, time):
-        if time < 0:
-            return None
-            # raise Exception('Value not found')
+    def get_latest(self, key, time):
         try:
-            return self.multi_idx_df.loc[(key, time)].value
-        except TypeError as e:
-            # Expected when no idx for key time pair, go back in time
-            # Might want to put a timeout in this function for this reason
-            return self.get(key, time - 1)
+            # for efficiency get the index first rather than creating a whole sub df with all columns
+            idx = self.multi_idx_df.index[self.multi_idx_df.index.get_level_values('time') < time][-1]
+            return self.multi_idx_df.at[idx, 'value']
+        except IndexError:
+            # raise Exception('Value not found')
+            return None
+
+    def get(self, key, time):
+        try:
+            return self.multi_idx_df.at[(key, time), 'value']
+        except KeyError as e:
+            # Expected when no idx for key-time pair, go back in time
+            return self.get_latest(key, time)
 
 
 class TestFn(unittest.TestCase):
